@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trangchump</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Navbar mobile optimization */
+        .navbar {
+            background: linear-gradient(45deg, #007bff, #00c4ff);
+            padding: 8px 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 600;
+            margin-right: auto;
+        }
+
+        .navbar-toggler {
+            border: none;
+            margin-left: auto;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            text-align: center;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .nav-item.disabled .nav-link {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .dropdown-menu {
+            background: #007bff;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-item {
+            color: white;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            text-align: center;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .dropdown-divider {
+            border-color: rgba(255, 255, 255, 0.3);
+            margin: 2px 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: #007bff;
+                padding: 8px;
+                border-radius: 0 0 10px 10px;
+                text-align: center;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 200px;
+                z-index: 999;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .navbar-collapse.show {
+                transform: translateX(0);
+            }
+
+            .navbar-nav {
+                margin-bottom: 5px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-item {
+                width: auto;
+                display: block;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+                margin-right: 10px;
+            }
+        }
+
+        /* Đảm bảo card không đè lên navbar */
+        .card {
+            margin-top: 20px;
+        }
+
+        /* Điều chỉnh hình ảnh trong card */
+        .card-img-custom {
+            max-width: 120px; /* Giới hạn chiều rộng ảnh */
+            height: auto;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto; /* Căn giữa hình ảnh trong cột */
+        }
+
+        /* Giữ layout ngang và căn giữa trên mobile */
+        @media (max-width: 767px) {
+            .card .row {
+                flex-direction: row;
+                align-items: center;
+            }
+            .card-img-custom {
+                max-width: 100px; /* Nhỏ hơn trên mobile */
+            }
+            .card-body {
+                padding: 0.75rem;
+            }
+            .card-title {
+                font-size: 1rem;
+            }
+            .card-text {
+                font-size: 0.875rem;
+            }
+            .col-4 {
+                display: flex;
+                justify-content: center; /* Căn giữa nội dung cột chứa ảnh */
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="trangchump.html">PLUTO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="trangchump.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="TTtacgia/tttgmp.html">Thông Tin Tác Giả</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục Chính
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="CodeFolder/truyenngan/trangchu.html">Truyện Ngắn</a></li>
+							<li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="CodeFolder/vanhoc/trangchu.html">Văn học</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="CodeFolder/tieuthuyet/trangchu.html">Tiểu Thuyết</a></li>
+							<li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="CodeFolder/tusu/trangchu.html">Tự Sự</a></li>
+							<li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="CodeFolder/bailuan/trangchu.html">Bài Luận</a></li>
+							<li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="CodeFolder/tho/tho.html">Thơ</a></li>
+							<li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="CodeFolder/TruyenNgauTac/truyenngautac.html">Truyện Ngẫu Tác</a></li>
+                        </ul>
+                    </li>
+					<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục Phụ
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="Codefolder2/tintuclienquan/trangchu.html">Tin Tức Liên Quan</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="Codefolder2/Chiasequantam/Trangchu.html">Chia sẻ quan tâm</a></li>
+                        </ul>
+                    </li>
+					
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Bảo trì</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-------------------------------------------card1--------------------------------------------------------------------->
+   
+    <!-----------------------------------------------card2----------------------------------------------------------------->
+  	
+    <!--------------------------------------------------------------------------------------------------------------------->
+
+ <!--------------------------------------------------------------------------------------------------------------------->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>phan1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Navbar mobile optimization */
+        .navbar {
+            background: linear-gradient(45deg, #007bff, #00c4ff);
+            padding: 8px 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 600;
+            margin-right: auto;
+        }
+
+        .navbar-toggler {
+            border: none;
+            margin-left: auto;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            text-align: center;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .nav-item.disabled .nav-link {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .dropdown-menu {
+            background: #007bff;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-item {
+            color: white;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            text-align: center;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .dropdown-divider {
+            border-color: rgba(255, 255, 255, 0.3);
+            margin: 2px 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: #007bff;
+                padding: 8px;
+                border-radius: 0 0 10px 10px;
+                text-align: center;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 200px;
+                z-index: 999;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .navbar-collapse.show {
+                transform: translateX(0);
+            }
+
+            .navbar-nav {
+                margin-bottom: 5px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-item {
+                width: auto;
+                display: block;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+                margin-right: 10px;
+            }
+        }
+
+        /* Card truyện */
+        .card {
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        .card-img-custom {
+            max-width: 120px;
+            height: auto;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+
+        /* Nội dung truyện */
+        .story-content {
+            margin-top: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .story-content .meta {
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .story-content .chapter-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Dropdown cho danh sách chương (trên cùng và dưới cùng) */
+        .chapter-dropdown {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-dropdown-bottom {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .chapter-dropdown .dropdown-toggle,
+        .chapter-dropdown-bottom .dropdown-toggle {
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chapter-dropdown .dropdown-toggle::after,
+        .chapter-dropdown-bottom .dropdown-toggle::after {
+            margin-left: 0.5rem;
+        }
+
+        .chapter-dropdown .dropdown-menu,
+        .chapter-dropdown-bottom .dropdown-menu {
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .chapter-dropdown .dropdown-item,
+        .chapter-dropdown-bottom .dropdown-item {
+            color: #333;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            text-align: left;
+        }
+
+        .chapter-dropdown .dropdown-item:hover,
+        .chapter-dropdown-bottom .dropdown-item:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .story-content .chapter-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-content .chapter-nav a {
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            background: #007bff;
+            color: white;
+        }
+
+        .story-content .chapter-nav a.disabled {
+            background: #ccc;
+            pointer-events: none;
+        }
+
+        .story-content .chapter-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .card .row {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .card-img-custom {
+                max-width: 100px;
+            }
+
+            .story-content {
+                padding: 0.75rem;
+            }
+
+            .story-content h3 {
+                font-size: 1.2rem;
+            }
+
+            .story-content .meta {
+                font-size: 0.8rem;
+            }
+
+            .story-content .chapter-title {
+                font-size: 1rem;
+            }
+
+            .chapter-dropdown .dropdown-toggle,
+            .chapter-dropdown-bottom .dropdown-toggle {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+
+            .chapter-dropdown .dropdown-item,
+            .chapter-dropdown-bottom .dropdown-item {
+                font-size: 0.8rem;
+            }
+
+            .story-content .chapter-nav a {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+
+            .story-content .chapter-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../../../trangchump.html">PLUTO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../../../trangchump.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../../TTtacgia/tttgmp.html">Thông Tin Tác Giả</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Truyện Ngắn</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Văn học</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Tiểu Thuyết</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Tự Sự</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Bài Luận</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Thơ</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../truyenngautac.html">Truyện Ngẫu Tác</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Bảo trì</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Card 1: Tiêu đề truyện -->
+    <div class="container">
+        <h3>Tìm Bình Yên Ở Đâu</h3>
+
+        <!-- Card 2: Nội dung truyện -->
+        <div class="story-content">
+            <div class="meta">
+                <p>Trang Chủ - Truyện Ngẫu Tác - Tìm Bình Yên ở đâu / chương 1</p>
+            </div>
+            <div class="chapter-title">
+                <p>Chương 1<br> - Thành Phố hoa lệ -</p>
+            </div>
+            <!-- Dropdown danh sách chương (trên cùng) -->
+            <div class="chapter-dropdown">
+                <div class="dropdown">
+                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Chương 1
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="phan1.html">Chương 1</a></li>
+                        <li><a class="dropdown-item" href="phan2.html">Chương 2</a></li>
+                        <li><a class="dropdown-item" href="phan3.html">Chương 3</a></li>
+                        <li><a class="dropdown-item" href="phan4.html">Chương 4</a></li>
+                        <li><a class="dropdown-item" href="phan5.html">Chương 5</a></li>
+						<li><a class="dropdown-item" href="phan6.html">Chương 6</a></li>
+						<li><a class="dropdown-item" href="phan7.html">Chương 7</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chapter-nav">
+                <a href="" class="disabled">Trước</a>
+                <a href="phan2.html">Sau</a>
+            </div>
+            <div class="chapter-text">
+                <p><strong>Tiến truyện.</strong></p>
+               <p> Một Thành phố hoa lệ. hoa cho người giàu lệ cho người nghèo. Trên đường lát đá sỏi trung tâm là tòa 
+Cung điện uy nghiêm, Hai bên đường những ngôi nhà cổ điển kiểu Trung cổ phong kiến, cấu trúc vừa quen thuộc vừa bắt mắt. Những người đi trên đường đang làm gì thế? Có lẽ họ chỉ làm những gì mà họ muốn,hoặc họ đang làm những gì họ không muốn, chỉ để kiếm miếng ăn qua ngày. Lũ quý tộc đang đi đâu thế? Những con người lộng lẫy ấy thật bắt mắt nhưng cũng thật đau đớn. Tên khốn đó cứ ăn những món đắt tiền còn chúng tôi buộc phải ăn những chiếc bánh mì khô khốc chẳng mấy gì ngon lành. Than ôi tên quý tộc lại bước đi, hắn vứt một đồng xu xuống một chiếc cốc trước kẻ ăn mày. Hắn nói gì cơ? Một lời phỉ bán? Một sự thương hại? Hay là một sự cứu rỗi? Không hắn chỉ quăn đồng xu xuống chiếc cốc và đi thôi. Có lẽ do tôi suy nghĩ quá nhiều chăng? thôi bỏ qua vậy tập trung vào hiện tại mà vận chuyển đống rau củ đến quán ăn phía trước thôi.</p>
+            </div>
+            <!-- Dropdown danh sách chương (dưới cùng) -->
+            <div class="chapter-dropdown-bottom">
+                <div class="dropdown">
+                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Chương 1
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="phan1.html">Chương 1</a></li>
+                        <li><a class="dropdown-item" href="phan2.html">Chương 2</a></li>
+                        <li><a class="dropdown-item" href="phan3.html">Chương 3</a></li>
+                        <li><a class="dropdown-item" href="phan4.html">Chương 4</a></li>
+                        <li><a class="dropdown-item" href="phan5.html">Chương 5</a></li>
+						<li><a class="dropdown-item" href="phan6.html">Chương 6</a></li>
+						<li><a class="dropdown-item" href="phan7.html">Chương 7</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

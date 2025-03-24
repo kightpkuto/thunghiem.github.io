@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>phan7</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background: #f4f4f4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        /* Navbar mobile optimization */
+        .navbar {
+            background: linear-gradient(45deg, #007bff, #00c4ff);
+            padding: 8px 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
+        }
+
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 600;
+            margin-right: auto;
+        }
+
+        .navbar-toggler {
+            border: none;
+            margin-left: auto;
+        }
+
+        .navbar-toggler-icon {
+            filter: invert(1);
+        }
+
+        .nav-link {
+            color: white !important;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            text-align: center;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .nav-item.disabled .nav-link {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .dropdown-menu {
+            background: #007bff;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-item {
+            color: white;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            text-align: center;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .dropdown-divider {
+            border-color: rgba(255, 255, 255, 0.3);
+            margin: 2px 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: #007bff;
+                padding: 8px;
+                border-radius: 0 0 10px 10px;
+                text-align: center;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 200px;
+                z-index: 999;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .navbar-collapse.show {
+                transform: translateX(0);
+            }
+
+            .navbar-nav {
+                margin-bottom: 5px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-item {
+                width: auto;
+                display: block;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+                margin-right: 10px;
+            }
+        }
+
+        /* Card truyện */
+        .card {
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        .card-img-custom {
+            max-width: 120px;
+            height: auto;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+
+        /* Nội dung truyện */
+        .story-content {
+            margin-top: 20px;
+            padding: 1rem;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .story-content .meta {
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .story-content .chapter-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Dropdown cho danh sách chương (trên cùng và dưới cùng) */
+        .chapter-dropdown {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-dropdown-bottom {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .chapter-dropdown .dropdown-toggle,
+        .chapter-dropdown-bottom .dropdown-toggle {
+            background: white;
+            color: #333;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chapter-dropdown .dropdown-toggle::after,
+        .chapter-dropdown-bottom .dropdown-toggle::after {
+            margin-left: 0.5rem;
+        }
+
+        .chapter-dropdown .dropdown-menu,
+        .chapter-dropdown-bottom .dropdown-menu {
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .chapter-dropdown .dropdown-item,
+        .chapter-dropdown-bottom .dropdown-item {
+            color: #333;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            text-align: left;
+        }
+
+        .chapter-dropdown .dropdown-item:hover,
+        .chapter-dropdown-bottom .dropdown-item:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .story-content .chapter-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .story-content .chapter-nav a {
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            background: #007bff;
+            color: white;
+        }
+
+        .story-content .chapter-nav a.disabled {
+            background: #ccc;
+            pointer-events: none;
+        }
+
+        .story-content .chapter-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .card .row {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .card-img-custom {
+                max-width: 100px;
+            }
+
+            .story-content {
+                padding: 0.75rem;
+            }
+
+            .story-content h3 {
+                font-size: 1.2rem;
+            }
+
+            .story-content .meta {
+                font-size: 0.8rem;
+            }
+
+            .story-content .chapter-title {
+                font-size: 1rem;
+            }
+
+            .chapter-dropdown .dropdown-toggle,
+            .chapter-dropdown-bottom .dropdown-toggle {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+
+            .chapter-dropdown .dropdown-item,
+            .chapter-dropdown-bottom .dropdown-item {
+                font-size: 0.8rem;
+            }
+
+            .story-content .chapter-nav a {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+
+            .story-content .chapter-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../../../trangchump.html">PLUTO</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="../../../trangchump.html">Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../../TTtacgia/tttgmp.html">Thông Tin Tác Giả</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Danh mục
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Truyện Ngắn</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Văn học</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Tiểu Thuyết</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Tự Sự</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Bài Luận</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Thơ</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="../truyenngautac.html">Truyện Ngẫu Tác</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Bảo trì</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Card 1: Tiêu đề truyện -->
+    <div class="container">
+        <h3>Tìm Bình Yên Ở Đâu</h3>
+
+        <!-- Card 2: Nội dung truyện -->
+        <div class="story-content">
+            <div class="meta">
+                <p>Trang Chủ - Truyện Ngẫu Tác - Tìm Bình Yên ở đâu / chương 7</p>
+            </div>
+            <div class="chapter-title">
+                <p>Chương 7<br>- Cuộc gặp gỡ -</p>
+            </div>
+            <!-- Dropdown danh sách chương (trên cùng) -->
+            <div class="chapter-dropdown">
+                <div class="dropdown">
+                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Chương 7
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="phan1.html">Chương 1</a></li>
+                        <li><a class="dropdown-item" href="phan2.html">Chương 2</a></li>
+                        <li><a class="dropdown-item" href="phan3.html">Chương 3</a></li>
+                        <li><a class="dropdown-item" href="phan4.html">Chương 4</a></li>
+                        <li><a class="dropdown-item" href="phan5.html">Chương 5</a></li>
+						<li><a class="dropdown-item" href="phan6.html">Chương 6</a></li>
+						<li><a class="dropdown-item" href="phan7.html">Chương 7</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chapter-nav">
+                <a href="phan8.html">Trước</a>
+                <a href="phan6.html">Sau</a>
+            </div>
+            <div class="chapter-text">
+                <p><strong>Tiến truyện.</strong></p>
+               <p> Tối hôm nào quán rượu cũ kỹ tại thành phố cảng cũng nhộn nhịp tiếng cười tiếng nói và Tiếng cạn ly, cùng ánh sáng thấp thỏm của đèn nến trên trần nhà, và tiếng cười khoái chí của những thực khách lạ mặt, họ ngồi trên những chiếc bàn đầy rượu và mồi nhắm.</p>
+<p>vài tên nông dân thì bàn chuyện canh tác như thế nào và mùa vụ ra sao,Ngược lại những nhà kinh doanh lại luôn ưu tiên bàn luận về chính trị và kinh tế, Còn những gã thợ săn thì yêu thích chủ đề về con mồi và cách lột da chúng như thế nào để bán đắt tiền hơn.</p>
+<p>Mùi khói củi thoan thoán hắt lên từ lò sưởi bên hông, và cấu trúc quán rượu thì được xây dựng với phong cách đặc trưng của mình, bức tường chủ yếu làm bằng đá, và các trụ cột thì lại ưu tiên sử dụng những khúc gỗ to được các bậc thầy kỳ công xây dựng. ở quầy thì lát đác vài chai rượu vang nổi tiếng vùng Sabaria, và những chai rượu phổ biến khác như rượu trắng của nước Tinthong phương Đông, cuối cùng là một người đàn ông Phục vụ to lớn ở quầy, với chiếc mũi cao, vai rộng, và khuôn mặt sắc bén, cùng màu tóc đen và giọng nói như gấu nâu hứng tợn, tô điểm hơn với lớp râu dày đặt trên mặt, càng làm cho mọi người nể sợ ông hơn, vì thế mà có lẽ quán rượu này ít khi có ẩu đả.</p>
+<p>Dù quán rượu có nhộn nhịp như thế nào đi chăng nữa, vẫn có một số thực khách vẫn nói chuyện một cách nhã nhặn như những người thuộc tầng lớp trí thức,nổi bật nhất là hai người ngồi đối diện ở góc bàn bên trái quán rượu, không ai khác là hiệp Sĩ Atone Haris là em họ của Atone Cristin và người bạn thân của chàng  Fuadiana Valadivis một nhà thơ nhà văn nổi tiếng bật nhất sứ Atheria,cũng là con thuộc dòng dõi quý tộc Fuadiana với truyền thống kinh Doanh nổi bật của cha mình.</p>
+<p>Không chỉ thuộc dòng dõi quý tộc cả hai đều mang trong mình ngoại hình ưa nhìn và được mọi người luôn đánh giá cao trong mỗi lần gặp mặt. Atone Haris Có mái tóc nâu hạt dẻ, nước da trắng, đôi mắt xanh dương, mũi cao và khuôn mặt thanh tao cùng thân hình lịch lãm nhưng không kém phần săn chắc, đặt biệt hơn chàng mang trong mình giọng nói nhã nhặn của tầng lớp trí thức, dù là một hiệp sĩ đã từng trải qua giai đoạn trên chiến trường. thì Ngược lại Fuadiana Valadivis lại khác hơn đôi chúc khi anh mang trong mình mái tóc vàng của gia tộc, Đôi mắt Nâu,mũi cao, khuôn mặt có phần nghiêm túc nổi bật với những quần thêm trên mắt,thân hình cao ráo rõ nét của một nhà văn, và có giọng nói trầm ấm lay động lòng người.</p>
+<p>Cả hai đã là bạn thân lúc nhỏ, và lúc nào cũng thấy hai người đi cùng nhau, dù là quý tộc nhưng Fuadiana Valadivis lại yêu thích chơi cùng bọn trẻ có tầng lớp thấp hơn mình, chàng xem họ như những người bạn chứ không phải là những kẻ nghèo mọn bám víu. ngược lại Atone Haris dù không ghét những đứa trẻ nghèo ấy nhưng chàng cũng một phần không thích họ vì lý do chúng quá dơ bẩn và vô học, đôi lúc gây phiền phức rất nhiều.</p>
+<p>Quay lại cuộc nói chuyện giữa hai người ở quán rượu, Giờ đây tên Gấu nâu tiếp tục cho củi vào lò để sưởi ấm những thực khác, khi màn đêm mang theo sương giá lạnh buốt dần buông xuống cả thành phố cảng. </p>
+<p>trong lúc ấy khuôn mặt Haris tối sầm lại, và đột ngột uống hết cốc rượu lớn trong một lần duy nhất chàng hét lên.</p>
+<p>" Ta chẳng thể nói gì được cả, tiếng nói của ta chẳng khác gì như một tên nô lệ bị ruồng bỏ bởi gia tộc. Ta biết người đang làm điều dại dột nhưng ngươi biết đấy ta không thể nào xen vào công việc của một kẻ cố chấp như vậy"</p>
+<p>chàng thở dài nói tiếp giọng nói có phần bất lực.</p>
+<p>"ngươi biết không Octocipa chỉ đang dụ người đến nơi mà hắn muốn người đến, Mục tiêu của hắn là thành phố cách đây ba mươi lăm dặm. Chẳng khác gì chúng ta đang tạo cơ hội cho chúng không?"</p>
+<p>Valadivis im lặng chàng biết bạn mình đang gặp rắc rối khá nghiêm trọng, Chàng cũng muốn giúp Haris nhưng liệu một người con của quý tộc Kinh Doanh thì có thể giúp gì cho người bạn mình đây? Chàng suy ngẫm một hồi lâu đột nhiên có một ý tưởng thú vị trong đầu, Chàng nói nhỏ giọng vừa đủ cả hai nghe.</p>
+<p>"Chúng ta có một cách, nếu ngươi tin ta hãy áp dụng nó ngay lập tức, trước khi anh họ Ngươi phạm phải sai lầm nghiêm trọng, đầu tiên gia đình ta có một lợi thế rất lớn, vì chúng ta có truyền thống kinh doanh lâu đời, sức ảnh hưởng của cha ta cùng các gia tộc khác, họ cũng tác động không kém đến chính trị ở vương quốc Atharia này. ta sẽ nhờ cha ta gây áp lực đến Nam tước Atomat Dowson, Và nhờ ông ta gửi điện thư về cho Từ tước Antone Cristin sớm có thể"</p>
+<p>Chàng Im lặng hồi lâu như thể đang suy ngẫm điều gì đó trong đầu mình mà Kể cả hiệp sĩ Haris cũng không hiểu được. phút chốc chàng nói tiếp nhưng nghiêm túc hơn rất nhiều.
+<p>"Và mục tiêu của ngươi bây giờ chỉ cần câu thời gian từ vài tuần, cho đến khi bức điện thư ấy đến tay từ tước."
+<p>Atone Haris Không ngờ bạn mình lại nghiêm túc đến vậy, chàng biết rõ Valadivis luôn là một người phúc hậu và tốt tính nhưng lần này là lần đầu tiên chàng thấy Valadivis thật sự chú tâm vào vấn đề chính trị, Chàng bỏ ly rượu trên tay xuống bàn, ăn một chút đậu phộng rồi nhìn xung quanh cảnh quan quán rượu, Giờ chỉ còn vài người thưa thớt uống rượu ở đây, nhưng nhìn chung ai ai cũng đều say rượu cả, tệ hơn là có hai tên đánh nhau, mặt mày lắm lem,bàn của chúng thì rối tung lên vài hạt đậu phộng lăn lóc trên sàn đá, nhưng nhanh chóng bị tên phục vụ quăng ra khỏi quán với sức mạnh khổng lồ mà ông ta có được.</p>
+<p>Chàng nhìn lại bạn mình, nhưng không còn rõ ràng như vừa nãy nữa,chàng biết bản thân mình đã say nên bèn hắc giọng lên một cái rồi nói một cách bình tĩnh.</p>
+<p>"Ta hiểu rồi, Trông cậy vào ngươi hết, ngươi biết đấy nếu chúng ta thạta bại lần này nữa, gia tộc của chúng ta sẽ chịu nổi ô nhục suốt cuộc đời mà không ngóc đầu lên nổi"</p>
+<p>Chàng hắc giọng một cái nữa rồi loạn choạng đứng lên khỏi chiếc ghế gỗ, cùng khuôn mặt mệt mỏi.</p>
+<p>"Ta không biết chúng ta sẽ đi đâu nhưng ta biết chúng ta sẽ phải làm gì, Ta đã thanh toán bữa nhậu hôm nay, Như một lời cảm ơn nữa với ngươi, người bạn thân yêu của ta, hẹn gặp lại ta mong tin tốt của ngươi Valadivis" chàng nói nhỏ có chút lưỡng lự nhưng cũng ngừng lại nhanh chóng.</p>
+<p>Valadivis ngạc nhìn nhìn Bạn mình chàng biết Haris là một người tốt, vốn dĩ cậu ta đã không phải là những kẻ quý tộc tham lam tiền bạc, và trải dài cuộc đời mình với tiền và quyền lực, thật chất tất cả danh tiếng và tiền bạc cũng như những chiến công hiển hách đều do chính Chàng hy sinh mồ hôi và sương máu để có được. Valadivis đứng lên đập tay vào vai bạn mình.</p>
+<p>"Được rồi hãy chờ tin tốt của ta người bạn chiến hữu, Ta mong chúng ta vẫn mãi như thế này dù có chuyện nào đi nữa" chàng nói giọng điệu rất nghiêm túc và chân thành.</p>
+<p>Thế là cả hai trở về trong đêm tối, mang trong mình sức nặng của lời thề Valadivis biết rõ mình cần phải làm gì.</p>
+            </div>
+            <!-- Dropdown danh sách chương (dưới cùng) -->
+            <div class="chapter-dropdown-bottom">
+                <div class="dropdown">
+                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Chương 7
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="phan1.html">Chương 1</a></li>
+                        <li><a class="dropdown-item" href="phan2.html">Chương 2</a></li>
+                        <li><a class="dropdown-item" href="phan3.html">Chương 3</a></li>
+                        <li><a class="dropdown-item" href="phan4.html">Chương 4</a></li>
+                        <li><a class="dropdown-item" href="phan5.html">Chương 5</a></li>
+						<li><a class="dropdown-item" href="phan6.html">Chương 6</a></li>
+						<li><a class="dropdown-item" href="phan7.html">Chương 7</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
